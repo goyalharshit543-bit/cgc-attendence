@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CGC University Attendance Portal — FaceAttend 3D AI System</title>
+  <meta name="title" content="CGC University Attendance Portal — FaceAttend 3D AI System">
+  <meta name="description" content="Official CGC University & Chandigarh Group of Colleges (CGC Landran) student attendance portal. Next-gen 3D AI facial recognition and university ERP synchronization.">
+  <meta name="keywords" content="cgc university attendance, cgc landran attendance, cgc student attendance portal, cgc attendance, chandigarh group of colleges attendance, faceattend cgc">
+  <meta name="google-site-verification" content="L-uizpBwBDvygXDZ0dbH1HuANEsLk4szLIySGLoX_xg" />
+  <meta name="google-site-verification" content="2h--O2rpN33sEC4eMqr9-cMl7bELQgTSAP2sF7YsU1I" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+  <link rel="stylesheet" href="style.css">
+  <!-- Three.js & OrbitControls -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+
+  <!-- Ambient 3D Aurora & Starfield Background -->
+  <div class="aurora-layer"></div>
+  <div id="bg-canvas-container"></div>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-brand" data-goto-tab="showcase">
+      <div class="nav-logo-icon">🎓</div>
+      <div class="nav-brand-text">
+        <h1>FaceAttend 3D</h1>
+        <p>AI Attendance & ERP SaaS</p>
+      </div>
+    </div>
+
+    <nav class="nav-links">
+      <button class="nav-tab-btn active" data-tab="showcase">🌐 3D Vision</button>
+      <button class="nav-tab-btn" data-tab="teacher">📸 Teacher Attendance</button>
+      <button class="nav-tab-btn" data-tab="student">🙋‍♂️ Student Enrollment</button>
+      <button class="nav-tab-btn" data-tab="erp">🔗 University ERP</button>
+      <button class="nav-tab-btn" data-tab="database">📋 Student Database</button>
+      <button class="nav-tab-btn" data-tab="reports">📊 Reports & Sessions</button>
+    </nav>
+
+    <div class="nav-status-badge">
+      <button class="btn btn-secondary btn-sm" onclick="openStudentShareModal()" style="display:inline-flex; align-items:center; gap:6px; padding:6px 12px; font-size:0.82rem; border-color:rgba(99,102,241,0.4); background:rgba(99,102,241,0.18); color:#c7d2fe; cursor:pointer;">
+        <span>🔗 Share Student Link</span>
+      </button>
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        <span id="status-sql-pill">SQL: Connected</span>
+      </div>
+      <div class="status-pill" style="border-color: rgba(0, 229, 255, 0.3); background: rgba(0, 229, 255, 0.1); color: var(--cyan);">
+        <span id="status-erp-pill">⚡ ERP: Ready</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Application Container -->
+  <main class="app-container">
+
+    <!-- ====================================================================
+         TAB 1: 3D CYBER VISION & AI SHOWCASE
+         ==================================================================== -->
+    <section id="tab-showcase" class="tab-pane active">
+      <div class="hero-grid">
+        <div class="hero-text">
+          <div class="cyber-pill">SCRFD · ArcFace 512-d · On-Device AI</div>
+          <h2 class="hero-title">Attendance in One Shot.</h2>
+          <p class="hero-subtitle">
+            Snap <strong>one group photo</strong> of your classroom. Our neural vision engine scans every face,
+            extracts 512-dimensional biometric signatures, and marks verified attendance into SQL &amp; your
+            <strong>University ERP SaaS</strong> in seconds.
+          </p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" data-goto-tab="teacher">🚀 Take Class Attendance</button>
+            <button class="btn btn-secondary" data-goto-tab="student">🙋‍♂️ Student Self-Enrollment</button>
+          </div>
+        </div>
+
+        <!-- 3D Interactive WebGL Stage -->
+        <div class="hologram-stage-card">
+          <div class="hologram-overlay">
+            <span class="hologram-tag">SCANNER_MODE: HOLOGRAPHIC_MESH</span>
+            <span class="hologram-tag" style="color:var(--violet); border-color:var(--violet);">AI_MODEL: BUFFALO_L</span>
+          </div>
+          <div id="three-hero-viewport"></div>
+          <div class="hologram-controls-hint">
+            <span>🖱️ DRAG TO ROTATE 3D HOLOGRAM · SCROLL TO ZOOM</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4-Step Pipeline -->
+      <div class="section-title-wrap">
+        <h3 class="section-title">One Photo → Verified Attendance</h3>
+        <p class="section-desc">Automated, highly accurate classroom attendance powered by neural networks running locally on your CPU.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">STEP 01</div>
+          <h3>📸 Snap the Class</h3>
+          <p>Teacher takes a single group photo of students using any phone, webcam, or classroom camera.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">STEP 02</div>
+          <h3>🔍 SCRFD Face Detection</h3>
+          <p>Detects all student faces across the room simultaneously, even small or distant faces in back rows.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">STEP 03</div>
+          <h3>🧬 ArcFace 512-d Matching</h3>
+          <p>Computes angular-margin face embeddings and calculates cosine similarity against enrolled students.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">STEP 04</div>
+          <h3>✅ Marked &amp; Synced</h3>
+          <p>Present students recorded in SQL, unknown faces isolated for review, and records pushed to ERP.</p>
+        </div>
+      </div>
+
+      <!-- KPI Stats Banner -->
+      <div class="stats-banner">
+        <div class="stat-box">
+          <div class="stat-value">99.8%</div>
+          <div class="stat-label">Recognition Accuracy (LFW Benchmark)</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">&lt; 5s</div>
+          <div class="stat-label">Full Classroom Processing Speed</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value" id="stat-total-students">—</div>
+          <div class="stat-label">Total Students in Class</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value" id="stat-total-sessions">—</div>
+          <div class="stat-label">Total Sessions Completed</div>
+        </div>
+      </div>
+
+      <!-- Tech Architecture Highlights -->
+      <div class="tech-grid">
+        <div class="tech-card">
+          <div class="tech-icon">👁️</div>
+          <h4>SCRFD Detector</h4>
+          <p>Deep neural face localization tuned for multi-scale dense crowd detection.</p>
+        </div>
+        <div class="tech-card">
+          <div class="tech-icon">🧬</div>
+          <h4>ArcFace Engine</h4>
+          <p>512-dimensional normalized hypersphere embeddings for zero false-positive recognition.</p>
+        </div>
+        <div class="tech-card">
+          <div class="tech-icon">⚙️</div>
+          <h4>ONNX Runtime</h4>
+          <p>High-efficiency inference optimized to run directly on standard CPU laptops.</p>
+        </div>
+        <div class="tech-card">
+          <div class="tech-icon">🔒</div>
+          <h4>On-Device Privacy</h4>
+          <p>Student biometric data never leaves your institution's local server.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         TAB 2: TEACHER CLASS ATTENDANCE
+         ==================================================================== -->
+    <section id="tab-teacher" class="tab-pane">
+      <div class="glass-panel">
+        <div class="panel-header">
+          <div class="panel-title">📸 Teacher Class Attendance</div>
+          <span class="cyber-pill" style="margin-bottom:0;">AI Facial Recognition</span>
+        </div>
+
+        <div class="form-grid">
+          <!-- Session Choice -->
+          <div class="form-group">
+            <label>Session Mode:</label>
+            <div style="display:flex; gap:20px; align-items:center; margin-top:4px;">
+              <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
+                <input type="radio" name="teacher_session_mode" value="new" checked onchange="toggleSessionMode()">
+                Create New Session
+              </label>
+              <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
+                <input type="radio" name="teacher_session_mode" value="existing" onchange="toggleSessionMode()">
+                Add to Existing Session
+              </label>
+            </div>
+          </div>
+
+          <!-- Session Title / Existing Select -->
+          <div class="form-group" id="group-new-session">
+            <label for="teacher-session-title">Session Subject / Title:</label>
+            <input type="text" id="teacher-session-title" class="form-control" placeholder="e.g. CS101 Lecture on Oct 12" />
+          </div>
+
+          <div class="form-group" id="group-existing-session" style="display:none;">
+            <label for="teacher-existing-session-select">Select Existing Session:</label>
+            <select id="teacher-existing-session-select" class="form-control"></select>
+          </div>
+
+          <!-- Threshold Slider -->
+          <div class="form-group">
+            <label>Recognition Threshold (Cosine Similarity):</label>
+            <div class="slider-container">
+              <input type="range" id="match-threshold-slider" class="slider-input" min="0.30" max="0.65" step="0.01" value="0.40">
+              <span id="match-threshold-val" class="slider-val">0.40</span>
+            </div>
+          </div>
+
+          <!-- Department & Section Roster Filter -->
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px; margin-bottom:14px;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="teacher-dept-filter">Filter Class Roster by Department:</label>
+              <select id="teacher-dept-filter" class="form-control">
+                <option value="">All Departments (Entire University)</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="teacher-section-filter">Filter Class Roster by Section:</label>
+              <select id="teacher-section-filter" class="form-control">
+                <option value="">All Sections (A to Z)</option>
+                <option value="A">Section A</option>
+                <option value="B">Section B</option>
+                <option value="C">Section C</option>
+                <option value="D">Section D</option>
+                <option value="E">Section E</option>
+                <option value="F">Section F</option>
+                <option value="G">Section G</option>
+                <option value="H">Section H</option>
+                <option value="I">Section I</option>
+                <option value="J">Section J</option>
+                <option value="K">Section K</option>
+                <option value="L">Section L</option>
+                <option value="M">Section M</option>
+                <option value="N">Section N</option>
+                <option value="O">Section O</option>
+                <option value="P">Section P</option>
+                <option value="Q">Section Q</option>
+                <option value="R">Section R</option>
+                <option value="S">Section S</option>
+                <option value="T">Section T</option>
+                <option value="U">Section U</option>
+                <option value="V">Section V</option>
+                <option value="W">Section W</option>
+                <option value="X">Section X</option>
+                <option value="Y">Section Y</option>
+                <option value="Z">Section Z</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Photo Upload Dropzone & Live Camera Trigger -->
+        <div style="margin-top:20px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <label style="font-weight:600; color:var(--text-muted);">Classroom Group Photos:</label>
+            <button class="btn btn-secondary btn-sm" onclick="openCameraForTeacher()">
+              📸 Snap Photo with Live Camera
+            </button>
+          </div>
+
+          <div id="teacher-dropzone" class="dropzone">
+            <div class="dropzone-icon">📁</div>
+            <div class="dropzone-text">Click or drag &amp; drop classroom group photos here</div>
+            <div class="dropzone-hint">Supports high-res JPG, PNG, WEBP (front, left, right angles)</div>
+            <input type="file" id="teacher-file-input" multiple accept="image/*" style="display:none;" />
+          </div>
+          <div id="teacher-file-chips" class="file-chips"></div>
+        </div>
+
+        <!-- Action Button -->
+        <div style="margin-top:28px;">
+          <button id="btn-run-attendance" class="btn btn-primary btn-block" onclick="runAttendanceFlow()">
+            🚀 Recognize Faces &amp; Mark Attendance
+          </button>
+        </div>
+      </div>
+
+      <!-- Real-Time Results Section -->
+      <div id="teacher-results-container" style="display:none;">
+        <!-- Multi-Photo Fusion Notice Banner -->
+        <div id="multi-photo-merge-banner" style="display:none; background: linear-gradient(135deg, rgba(37,99,235,0.14), rgba(16,185,129,0.12)); border: 1px solid rgba(59,130,246,0.35); border-radius: 12px; padding: 14px 18px; margin-bottom: 24px; align-items: center; gap: 14px;">
+          <div style="font-size: 2rem;">📸✨</div>
+          <div style="flex:1;">
+            <div style="font-weight: 700; color: #93c5fd; font-size: 1rem; display: flex; align-items: center; gap: 8px;">
+              <span>Multi-Photo Intelligent Angle Fusion</span>
+              <span class="cyber-pill" style="font-size: 0.72rem; padding: 2px 8px; margin-bottom: 0; background: rgba(16,185,129,0.2); color:#6ee7b7; border-color:rgba(16,185,129,0.4);">Auto-Deduplicated</span>
+            </div>
+            <div id="multi-photo-merge-desc" style="font-size: 0.88rem; color: var(--text-muted); margin-top: 4px;">
+              Combined multiple class angles. Students detected across multiple photos have been deduplicated — each student is marked present once!
+            </div>
+          </div>
+        </div>
+
+        <!-- Metrics Cards -->
+        <div class="stats-banner">
+          <div class="stat-box" style="border-top: 3px solid var(--emerald);">
+            <div class="stat-value" id="res-present-count" style="color:var(--emerald);">0</div>
+            <div class="stat-label" id="res-present-label">Total Attended Students</div>
+            <div id="res-present-subtext" style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">Verified Attendees in Class</div>
+          </div>
+          <div class="stat-box" style="border-top: 3px solid var(--ruby);">
+            <div class="stat-value" id="res-absent-count" style="color:var(--ruby);">0</div>
+            <div class="stat-label" id="res-absent-label">Students Absent</div>
+            <div id="res-absent-subtext" style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">Missing from Session</div>
+          </div>
+          <div class="stat-box" style="border-top: 3px solid var(--cyan);">
+            <div class="stat-value" id="res-attendance-rate">0%</div>
+            <div class="stat-label" id="res-rate-label">Attendance Rate</div>
+            <div id="res-rate-subtext" style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">Class Percentage</div>
+          </div>
+          <div class="stat-box" style="border-top: 3px solid var(--violet);">
+            <div class="stat-value" id="res-total-faces">0</div>
+            <div class="stat-label" id="res-total-label">Total Students in Class</div>
+            <div id="res-scans-summary" style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">Total Enrolled Class Strength</div>
+          </div>
+        </div>
+
+        <!-- Annotated Images Gallery -->
+        <div class="glass-panel">
+          <div class="panel-header">
+            <div class="panel-title">📷 AI Annotated Classroom Photos</div>
+            <span style="font-size:0.82rem; color:var(--text-muted);">Green = Verified Student · Red = Unrecognized</span>
+          </div>
+          <div id="annotated-images-gallery"></div>
+        </div>
+
+        <!-- Unrecognized Faces Gallery -->
+        <div id="unknown-faces-section" class="glass-panel" style="display:none; border-color: rgba(239, 68, 68, 0.3);">
+          <div class="panel-header">
+            <div class="panel-title" style="color:#fca5a5;">
+              ⚠️ Unrecognized Faces Detected (<span id="unknown-count-label">0</span>)
+            </div>
+            <span style="font-size:0.82rem; color:var(--text-muted);">These faces did not match any enrolled student embeddings</span>
+          </div>
+          <div id="unknown-faces-grid" class="unknown-gallery"></div>
+        </div>
+
+        <!-- ERP Push & Export Action Box -->
+        <div class="glass-panel" style="background: linear-gradient(135deg, rgba(14,20,42,0.8), rgba(20,28,60,0.8));">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+            <div>
+              <h4 style="font-size:1.2rem; margin-bottom:4px;">⚡ University ERP SaaS Integration</h4>
+              <p style="color:var(--text-muted); font-size:0.9rem;">Push these attendance marks directly to your university ERP server with one click.</p>
+            </div>
+            <div style="display:flex; gap:12px;">
+              <button id="btn-push-session-erp" class="btn btn-primary">📤 Push to University ERP</button>
+              <button id="btn-download-session-csv" class="btn btn-secondary">⬇️ Download CSV</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Full Roster Table -->
+        <div class="glass-panel">
+          <div class="panel-header">
+            <div class="panel-title">📋 Class Attendance Roster</div>
+          </div>
+          <div class="table-container">
+            <table class="cyber-table">
+              <thead>
+                <tr>
+                  <th>Roll No</th>
+                  <th>Student Name</th>
+                  <th>Department</th>
+                  <th>Section</th>
+                  <th>Status</th>
+                  <th>AI Confidence</th>
+                  <th>Photo Source</th>
+                  <th>ERP Synced</th>
+                  <th>Marked Time</th>
+                  <th>Manual Override</th>
+                </tr>
+              </thead>
+              <tbody id="teacher-roster-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         TAB 3: STUDENT SELF-ENROLLMENT PORTAL
+         ==================================================================== -->
+    <section id="tab-student" class="tab-pane">
+
+      <!-- Student Portal Shareable Link Banner -->
+      <div class="share-portal-card">
+        <div class="share-portal-header">
+          <div class="share-portal-title">
+            <span>📢 Public Student Portal Link</span>
+            <span id="global-link-indicator" class="cyber-pill" style="margin-bottom:0; background:rgba(16,185,129,0.2); color:#6ee7b7; border-color:rgba(16,185,129,0.4);">
+              🌐 Worldwide 4G/5G Ready
+            </span>
+          </div>
+          <div class="share-actions">
+            <button class="btn btn-primary btn-sm" onclick="copyStudentLink()">
+              📋 Copy Link
+            </button>
+            <button class="btn btn-secondary btn-sm" onclick="openStudentShareModal()">
+              📱 Show QR Code
+            </button>
+            <a href="/student" target="_blank" class="btn btn-secondary btn-sm" style="text-decoration:none;">
+              🌐 Open Portal ↗
+            </a>
+          </div>
+        </div>
+
+        <p class="share-portal-desc">
+          Share this dedicated link with your students via <strong>WhatsApp, email, or classroom screen</strong>. Students open it on their phones to submit their <strong>Photo, Name, GR Number, Branch, and Section</strong>. Everything is automatically saved into your database! Students <strong>cannot</strong> access teacher attendance or ERP settings from this link.
+        </p>
+
+        <div class="share-url-box">
+          <span style="color:var(--text-muted); font-size:0.82rem; font-weight:600;">STUDENT LINK:</span>
+          <span class="share-url-text" id="live-share-url">http://localhost:5000/student</span>
+          <button class="btn btn-secondary btn-sm" style="padding:4px 10px; font-size:0.75rem;" onclick="copyStudentLink()">
+            Copy
+          </button>
+        </div>
+      </div>
+
+      <div class="glass-panel">
+        <div class="panel-header">
+          <div class="panel-title">🙋‍♂️ Manual / In-Class Student Enrollment</div>
+          <span class="cyber-pill" style="margin-bottom:0;">512-d Biometric Storage</span>
+        </div>
+
+        <p style="color:var(--text-muted); margin-bottom:24px;">
+          Alternatively, you can manually enroll a student right here from the teacher console:
+        </p>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="student-name">Full Name *</label>
+            <input type="text" id="student-name" class="form-control" placeholder="e.g. Harshit Verma" required />
+          </div>
+          <div class="form-group">
+            <label for="student-roll">GR Number / Roll Number *</label>
+            <input type="text" id="student-roll" class="form-control" placeholder="e.g. 131 or GR-202401" required />
+          </div>
+          <div class="form-group">
+            <label for="student-dept">Branch / Department *</label>
+            <select id="student-dept" class="form-control" onchange="handleTeacherBranchChange()">
+              <option value="" disabled selected>-- Select Branch / Department --</option>
+              <option value="B.Tech Computer Science &amp; Engineering (CSE)">B.Tech Computer Science &amp; Engineering (CSE)</option>
+              <option value="B.Tech Artificial Intelligence &amp; Machine Learning (AI &amp; ML)">B.Tech Artificial Intelligence &amp; Machine Learning (AI &amp; ML)</option>
+              <option value="B.Tech Artificial Intelligence &amp; Data Science (AI &amp; DS)">B.Tech Artificial Intelligence &amp; Data Science (AI &amp; DS)</option>
+              <option value="B.Tech Information Technology (IT)">B.Tech Information Technology (IT)</option>
+              <option value="B.Tech Electronics &amp; Communication Engineering (ECE)">B.Tech Electronics &amp; Communication Engineering (ECE)</option>
+              <option value="B.Tech Mechanical Engineering (ME)">B.Tech Mechanical Engineering (ME)</option>
+              <option value="B.Tech Civil Engineering (CE)">B.Tech Civil Engineering (CE)</option>
+              <option value="B.Tech Electrical Engineering (EE)">B.Tech Electrical Engineering (EE)</option>
+              <option value="OTHER">OTHER (Specify department...)</option>
+            </select>
+          </div>
+          <div class="form-group" id="teacher-other-branch-group" style="display:none;">
+            <label for="student-other-dept">Write Department / Branch *</label>
+            <input type="text" id="student-other-dept" class="form-control" placeholder="e.g. B.Tech Chemical Engineering" />
+          </div>
+          <div class="form-group">
+            <label for="student-section">Section *</label>
+            <select id="student-section" class="form-control" required>
+              <option value="" disabled selected>-- Select Section (Section A to Z) * --</option>
+              <option value="A">Section A</option>
+              <option value="B">Section B</option>
+              <option value="C">Section C</option>
+              <option value="D">Section D</option>
+              <option value="E">Section E</option>
+              <option value="F">Section F</option>
+              <option value="G">Section G</option>
+              <option value="H">Section H</option>
+              <option value="I">Section I</option>
+              <option value="J">Section J</option>
+              <option value="K">Section K</option>
+              <option value="L">Section L</option>
+              <option value="M">Section M</option>
+              <option value="N">Section N</option>
+              <option value="O">Section O</option>
+              <option value="P">Section P</option>
+              <option value="Q">Section Q</option>
+              <option value="R">Section R</option>
+              <option value="S">Section S</option>
+              <option value="T">Section T</option>
+              <option value="U">Section U</option>
+              <option value="V">Section V</option>
+              <option value="W">Section W</option>
+              <option value="X">Section X</option>
+              <option value="Y">Section Y</option>
+              <option value="Z">Section Z</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="student-email">University Email</label>
+            <input type="email" id="student-email" class="form-control" placeholder="e.g. alice@university.edu" />
+          </div>
+        </div>
+
+        <!-- Photo Capture / Upload -->
+        <div style="margin-top:20px;">
+          <label style="font-weight:600; color:var(--text-muted); margin-bottom:10px; display:block;">
+            Face Biometric Input (Snap Selfie or Upload 1-3 Photos):
+          </label>
+
+          <div style="display:flex; gap:16px; margin-bottom:16px; flex-wrap:wrap;">
+            <button class="btn btn-secondary" onclick="openCameraForStudent()">
+              📸 Take Live Camera Selfie
+            </button>
+            <div id="selfie-preview-chip" style="display:none; align-items:center; gap:8px;" class="file-chip">
+              <img id="selfie-preview-img" src="" alt="Selfie" style="width:28px; height:28px; border-radius:50%; object-fit:cover;" />
+              <span>Camera Snapshot Ready</span>
+            </div>
+          </div>
+
+          <div id="student-dropzone" class="dropzone">
+            <div class="dropzone-icon">🤳</div>
+            <div class="dropzone-text">Click or drag &amp; drop clear, frontal face photos</div>
+            <div class="dropzone-hint">Upload 1 to 3 photos with good lighting (no sunglasses or masks)</div>
+            <input type="file" id="student-file-input" multiple accept="image/*" style="display:none;" />
+          </div>
+          <div id="student-file-chips" class="file-chips"></div>
+        </div>
+
+        <div style="margin-top:28px;">
+          <button id="btn-submit-enroll" class="btn btn-primary btn-block" onclick="submitEnrollmentFlow()">
+            ✨ Complete Enrollment &amp; Save to SQL
+          </button>
+        </div>
+      </div>
+
+      <!-- Enrollment Face Crop Preview -->
+      <div id="enrollment-crop-preview" class="glass-panel" style="display:none;">
+        <div class="panel-header">
+          <div class="panel-title" style="color:var(--emerald);">🎉 Biometric Registration Verified</div>
+        </div>
+        <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:16px;">
+          The neural network successfully extracted the 512-dimensional normalized face embeddings:
+        </p>
+        <div id="enrollment-crop-grid" class="unknown-gallery"></div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         TAB 4: UNIVERSITY ERP SAAS INTEGRATION
+         ==================================================================== -->
+    <section id="tab-erp" class="tab-pane">
+      <div class="glass-panel">
+        <div class="panel-header">
+          <div class="panel-title">🔗 University ERP SaaS Two-Way Integration</div>
+          <span class="cyber-pill" style="margin-bottom:0;">Automated Roster &amp; Sync</span>
+        </div>
+
+        <p style="color:var(--text-muted); margin-bottom:24px;">
+          Connect FaceAttend to your university's administrative ERP SaaS system. Fetch student rosters automatically and push marked attendance records without manual data entry.
+        </p>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="erp-api-url">ERP Base API URL:</label>
+            <input type="text" id="erp-api-url" class="form-control" placeholder="https://erp.youruniversity.edu/api" />
+          </div>
+          <div class="form-group">
+            <label for="erp-api-key">University ERP SaaS API Key:</label>
+            <input type="password" id="erp-api-key" class="form-control" placeholder="Paste your university API key here" />
+          </div>
+          <div class="form-group">
+            <label for="erp-auth-header">Authentication Header Name:</label>
+            <select id="erp-auth-header" class="form-control">
+              <option value="Authorization">Authorization</option>
+              <option value="X-API-Key">X-API-Key</option>
+              <option value="X-Auth-Token">X-Auth-Token</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="erp-auth-scheme">Token Scheme Prefix:</label>
+            <select id="erp-auth-scheme" class="form-control">
+              <option value="Bearer">Bearer</option>
+              <option value="ApiKey">ApiKey</option>
+              <option value="Token">Token</option>
+              <option value="None">None (Raw Header)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Mock Mode Toggle -->
+        <div style="margin:16px 0 24px; padding:16px; background:rgba(0, 229, 255, 0.04); border:1px solid var(--border-subtle); border-radius:var(--radius-md);">
+          <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+            <input type="checkbox" id="erp-mock-mode" style="width:18px; height:18px; accent-color:var(--cyan);">
+            <strong>🧪 Enable Built-in Mock ERP Simulator</strong>
+          </label>
+          <span style="font-size:0.82rem; color:var(--text-muted); margin-left:28px; display:block;">
+            Test the entire student roster fetch and attendance push workflow immediately without waiting for university IT credentials.
+          </span>
+        </div>
+
+        <button class="btn btn-primary" onclick="saveErpConfigFlow()">💾 Save ERP Settings</button>
+      </div>
+
+      <!-- Actions Panel -->
+      <div class="glass-panel">
+        <div class="panel-header">
+          <div class="panel-title">🔄 Real-Time Two-Way Sync Actions</div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+          <div style="background:rgba(255,255,255,0.02); padding:20px; border-radius:var(--radius-md); border:1px solid var(--border-subtle);">
+            <h4 style="margin-bottom:8px;">1. Test Connection</h4>
+            <p style="color:var(--text-muted); font-size:0.88rem; margin-bottom:16px;">
+              Verify that your university ERP endpoint is reachable and authenticates with your key.
+            </p>
+            <button id="btn-test-erp" class="btn btn-secondary btn-block" onclick="testErpConnectionFlow()">
+              🔍 Test ERP Connection
+            </button>
+          </div>
+
+          <div style="background:rgba(255,255,255,0.02); padding:20px; border-radius:var(--radius-md); border:1px solid var(--border-subtle);">
+            <h4 style="margin-bottom:8px;">2. Fetch Students from ERP</h4>
+            <p style="color:var(--text-muted); font-size:0.88rem; margin-bottom:16px;">
+              Import new students and sync department rosters directly from ERP into local SQL.
+            </p>
+            <button id="btn-fetch-erp" class="btn btn-emerald btn-block" onclick="fetchErpStudentsFlow()">
+              📥 Fetch Students from ERP
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         TAB 5: STUDENTS & SQL DATABASE
+         ==================================================================== -->
+    <section id="tab-database" class="tab-pane">
+      <div class="glass-panel">
+        <div class="panel-header" style="flex-wrap:wrap; gap:12px;">
+          <div class="panel-title">📋 Student Biometric Records &amp; SQL Database</div>
+          <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+            <div class="view-mode-pill-group">
+              <button type="button" id="btn-view-table" class="view-mode-pill active" onclick="switchStudentView('table')">
+                📋 Table View
+              </button>
+              <button type="button" id="btn-view-grouped" class="view-mode-pill" onclick="switchStudentView('grouped')">
+                🗂️ Course &amp; Section-Wise View
+              </button>
+            </div>
+            <a id="btn-download-photos" href="/api/students/photos/download" class="btn btn-secondary btn-sm" download title="Download all student photos organized by Course and Section in a ZIP archive">
+              📦 Download Photos (.ZIP)
+            </a>
+          </div>
+        </div>
+
+        <!-- Metrics -->
+        <div class="stats-banner" style="margin-bottom:24px;">
+          <div class="stat-box">
+            <div class="stat-value" id="db-total-count">0</div>
+            <div class="stat-label">Total Registered Students</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value" id="db-with-faces-count" style="color:var(--emerald);">0</div>
+            <div class="stat-label">With Face Biometrics</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value" id="db-missing-faces-count" style="color:var(--ruby);">0</div>
+            <div class="stat-label">Awaiting Photo Enrollment</div>
+          </div>
+        </div>
+
+        <!-- Search & Filter Controls -->
+        <div style="display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap;">
+          <input type="text" id="db-search-input" class="form-control" placeholder="🔍 Search student name, roll/GR no, course, or section..." style="flex:2; min-width:220px;" />
+          <select id="db-dept-filter" class="form-control" style="flex:1.2; min-width:180px;">
+            <option value="">All Courses / Departments</option>
+          </select>
+          <select id="db-section-filter" class="form-control" style="flex:1; min-width:140px;">
+            <option value="">All Sections (A to Z)</option>
+            <option value="A">Section A</option>
+            <option value="B">Section B</option>
+            <option value="C">Section C</option>
+            <option value="D">Section D</option>
+            <option value="E">Section E</option>
+            <option value="F">Section F</option>
+            <option value="G">Section G</option>
+            <option value="H">Section H</option>
+            <option value="I">Section I</option>
+            <option value="J">Section J</option>
+            <option value="K">Section K</option>
+            <option value="L">Section L</option>
+            <option value="M">Section M</option>
+            <option value="N">Section N</option>
+            <option value="O">Section O</option>
+            <option value="P">Section P</option>
+            <option value="Q">Section Q</option>
+            <option value="R">Section R</option>
+            <option value="S">Section S</option>
+            <option value="T">Section T</option>
+            <option value="U">Section U</option>
+            <option value="V">Section V</option>
+            <option value="W">Section W</option>
+            <option value="X">Section X</option>
+            <option value="Y">Section Y</option>
+            <option value="Z">Section Z</option>
+          </select>
+          <select id="db-filter-select" class="form-control" style="flex:1; min-width:140px;">
+            <option value="all">All Photos Status</option>
+            <option value="with_photos">With Face Photos</option>
+            <option value="missing_photos">Missing Face Photos</option>
+          </select>
+        </div>
+
+        <!-- 1. Table View -->
+        <div id="db-table-view" class="table-container">
+          <table class="cyber-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Roll / GR No</th>
+                <th>Full Name</th>
+                <th>Course / Department</th>
+                <th>Section</th>
+                <th>Email</th>
+                <th>Face Encodings</th>
+                <th>ERP Synced</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="db-students-tbody"></tbody>
+          </table>
+        </div>
+
+        <!-- 2. Course & Section-Wise Grouped View -->
+        <div id="db-grouped-view" style="display:none; margin-top:20px;"></div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         TAB 6: SESSIONS & REPORTS
+         ==================================================================== -->
+    <section id="tab-reports" class="tab-pane">
+      <div class="glass-panel">
+        <div class="panel-header">
+          <div class="panel-title">📊 Historical Sessions &amp; Attendance Reports</div>
+        </div>
+        <p style="color:var(--text-muted); margin-bottom:24px;">
+          Browse previous lecture attendance sessions, view marked rosters, repush to ERP, or download CSV reports.
+        </p>
+
+        <div id="reports-sessions-list"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ====================================================================
+       MODAL: LIVE WEBCAM CAPTURE
+       ==================================================================== -->
+  <div id="camera-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 style="font-size:1.25rem;">📸 Live Camera Snapshot</h3>
+        <button id="camera-modal-close" class="modal-close">&times;</button>
+      </div>
+
+      <div class="camera-preview-container">
+        <video id="camera-video" playsinline></video>
+        <canvas id="camera-canvas" style="display:none;"></canvas>
+        <div class="camera-overlay-reticle"></div>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:12px;">
+        <button id="camera-btn-retake" class="btn btn-secondary btn-sm" style="display:none;">Retake</button>
+        <button id="camera-btn-snap" class="btn btn-primary btn-sm">📸 Capture Snapshot</button>
+        <button id="camera-btn-confirm" class="btn btn-emerald btn-sm" style="display:none;">✅ Confirm Snapshot</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR Code & Link Share Modal -->
+  <div id="qr-modal-overlay" class="modal-overlay" onclick="closeStudentShareModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="font-size:1.25rem; font-weight:700; color:#fff; display:flex; align-items:center; gap:8px;">
+          <span>📱 Student Registration Portal</span>
+        </h3>
+        <button onclick="closeStudentShareModal()" style="background:none; border:none; color:var(--text-muted); font-size:1.6rem; cursor:pointer; line-height:1;">&times;</button>
+      </div>
+      <p style="font-size:0.86rem; color:var(--text-muted); margin-top:8px; line-height:1.45;">
+        Display this QR code on your classroom projector or screen. Students can scan it with their phone camera to open the portal and submit their photo, GR number, and branch.
+      </p>
+
+      <div class="qr-code-frame" id="qr-code-container">
+        <img id="qr-modal-img" src="" alt="Student Portal QR Code" style="width:200px; height:200px; display:block;" />
+      </div>
+
+      <div class="share-url-box" style="margin-bottom:18px;">
+        <span id="qr-modal-url" class="share-url-text">http://localhost:5000/student</span>
+      </div>
+
+      <div style="display:flex; gap:10px;">
+        <button class="btn btn-primary" style="flex:1;" onclick="copyStudentLink()">📋 Copy Link</button>
+        <button class="btn btn-secondary" onclick="window.open(document.getElementById('qr-modal-url').textContent, '_blank')">🌐 Open Portal ↗</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Student Full Photo Preview Modal -->
+  <div id="student-photo-modal" class="modal-overlay" onclick="closePhotoModal(event)">
+    <div class="photo-modal-card" onclick="event.stopPropagation()">
+      <div class="modal-header" style="justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h3 id="photo-modal-name" style="font-size:1.15rem; color:#f8fafc; margin:0;">Student Photo</h3>
+        <button class="modal-close" onclick="closePhotoModal()">&times;</button>
+      </div>
+      <img id="photo-modal-img" class="photo-modal-img" src="" alt="Student Photo" />
+      <div style="text-align:left; background:rgba(15,23,42,0.85); padding:12px 16px; border-radius:10px; font-size:0.85rem; border:1px solid rgba(255,255,255,0.08); margin-bottom:16px;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+          <span style="color:var(--text-muted);">GR / Roll No:</span>
+          <strong id="photo-modal-gr" style="color:var(--cyan); font-family:var(--font-mono);">—</strong>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+          <span style="color:var(--text-muted);">Course / Dept:</span>
+          <span id="photo-modal-dept" style="color:#e2e8f0; font-weight:600;">—</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+          <span style="color:var(--text-muted);">Section:</span>
+          <span id="photo-modal-section" class="badge" style="background:rgba(99,102,241,0.2); color:#a5b4fc;">—</span>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+          <span style="color:var(--text-muted);">Storage Path:</span>
+          <span id="photo-modal-path" style="color:var(--text-muted); font-size:0.75rem; word-break:break-all;">—</span>
+        </div>
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:10px;">
+        <a id="photo-modal-download-link" href="#" download class="btn btn-secondary btn-sm">⬇️ Download Photo</a>
+        <button class="btn btn-primary btn-sm" onclick="closePhotoModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <!-- Main Scripts -->
+  <script type="module">
+    import { init3DExperience } from './three_scene.js';
+    import {
+      runAttendanceRecognition,
+      submitStudentEnrollment,
+      saveErpConfig,
+      testErpConnection,
+      fetchStudentsFromErp,
+      openCameraModal,
+      openStudentShareModal,
+      closeStudentShareModal,
+      copyStudentLink
+    } from './app.js';
+
+    // Initialize 3D Engine
+    window.addEventListener('DOMContentLoaded', () => {
+      init3DExperience();
+    });
+
+    // Global Action Bridges for HTML onclick
+    window.toggleSessionMode = () => {
+      const mode = document.querySelector('input[name="teacher_session_mode"]:checked').value;
+      document.getElementById('group-new-session').style.display = mode === 'new' ? 'block' : 'none';
+      document.getElementById('group-existing-session').style.display = mode === 'existing' ? 'block' : 'none';
+    };
+
+    window.openCameraForTeacher = () => openCameraModal('teacher');
+    window.openCameraForStudent = () => openCameraModal('student');
+    window.runAttendanceFlow = () => runAttendanceRecognition();
+    window.submitEnrollmentFlow = () => submitStudentEnrollment();
+    window.saveErpConfigFlow = () => saveErpConfig();
+    window.testErpConnectionFlow = () => testErpConnection();
+    window.fetchErpStudentsFlow = () => fetchStudentsFromErp();
+    window.openStudentShareModal = () => openStudentShareModal();
+    window.closeStudentShareModal = (e) => closeStudentShareModal(e);
+    window.copyStudentLink = () => copyStudentLink();
+  </script>
+</body>
+</html>
