@@ -180,7 +180,9 @@ body {
 .nav-status-badge {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .status-pill {
@@ -1387,6 +1389,16 @@ select.form-control {
     padding: 7px 13px;
     font-size: 0.8rem;
     flex-shrink: 0;
+  }
+
+  .nav-status-badge {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    width: 100% !important;
+    margin-top: 8px !important;
   }
 
   /* Cards & Spacing */
